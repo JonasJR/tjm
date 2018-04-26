@@ -27,8 +27,10 @@ def ending()
 end
 
 def errorloop()
-  puts "SYSTEM LOCKED!!!"
-  sleep(0.5)
+  while true do
+    puts "SYSTEM LOCKED!!!"
+    sleep(0.5)
+  end
 end
 
 def timeend()
