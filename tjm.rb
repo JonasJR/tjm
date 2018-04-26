@@ -31,6 +31,13 @@ def errorloop()
   sleep(0.5)
 end
 
+def timeend()
+  while true do
+    puts "The time is out! IT wins!!!"
+    sleep(0.5)
+  end
+end
+
 def trypassword()
   print "Password: "
   pass = gets.chomp
@@ -47,18 +54,10 @@ def trypassword()
   end
 end
 
-def timeend()
-  puts "The time is out! IT wins!!!"
-  sleep(0.5)
-end
-
 def gameloop()
   while true do
     puts "Time passed: #{$timer} seconds | Tries left: #{$counter} "
     sleep(0.5)
-    if $timer == 600
-      timeend()
-    end
     if $counter == 0
       errorloop()
     else
@@ -97,11 +96,14 @@ def init()
   sleep(0.5)
   puts ""
   puts ""
-  thr = Thread.new {600.times do
+  thr = Thread.new {601.times do
     $timer += 1
     sleep 1
+    if $timer == 6
+      timeend()
+    end
   end}
 end
 
-#init()
+init()
 gameloop()
