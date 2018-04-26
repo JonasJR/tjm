@@ -99,7 +99,7 @@ def init()
   thr = Thread.new {601.times do
     $timer += 1
     sleep 1
-    if $timer == 6
+    if $timer == 600
       timeend()
     end
   end}
