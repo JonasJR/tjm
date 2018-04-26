@@ -69,6 +69,7 @@ def gameloop()
 end
 
 def init()
+  system "clear" or system "cls"
   print "PRESS ANY KEY TO BEGIN"
   STDIN.getch
   puts ""
