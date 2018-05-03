@@ -1,26 +1,37 @@
 #!/usr/bin/ruby
 require 'io/console'
+require 'similar_text'
 
 $access = false
 $counter = 5
 $timer = 0
+$speed = 0.05
+$password = "lösenord"
+
+def string_difference_percent(a, b)
+  longer = [a.size, b.size].max
+  same = a.each_char.zip(b.each_char).select { |a,b| a == b }.size
+  return (longer - same) / a.size.to_f
+end
 
 def ending()
-  "$ Jaaa! Ni gissade rätt!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  $thr.kill
+  "$ Jaaa! Ni gissade rätt!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
   sleep(1)
-  "$ Nu ska jag bara hitta viruset och ta bort det!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Nu ska jag bara hitta viruset och ta bort det!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
   sleep(0.5)
-  "$ ls -al".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ ls -al".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   sleep(0.1)
   puts ""
   puts("drwxrwxr-x 4 IT IT 1785 apr 26 13:11 virus.exe")
   sleep(0.5)
-  "$ rm -f virus.exe".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ rm -f virus.exe".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
   sleep(0.5)
-  "$ shutdown".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ shutdown".each_char {|c| putc c ; sleep $speed; $stdout.flush }
+  puts("")
   sleep(0.5)
   puts "System shutdown..."
   sleep 999
@@ -43,7 +54,7 @@ end
 def trypassword()
   print "Password: "
   pass = gets.chomp
-  if pass == "test"
+  if pass == $password
     "...".each_char {|c| putc c ; sleep 0.3; $stdout.flush }
     puts " Access granted!"
     $access = true
@@ -52,6 +63,9 @@ def trypassword()
     $counter = $counter - 1
     "...".each_char {|c| putc c ; sleep 0.3; $stdout.flush }
     puts " Denied!"
+    temp = pass.similar($password)
+    temp2 = pass.chars.sort.join.similar_chars($password.chars.sort.join)
+    puts "You guessed #{temp}% correct and #{temp2} chars matched"
     sleep(0.5)
   end
 end
@@ -73,33 +87,33 @@ def init()
   print "PRESS ANY KEY TO BEGIN"
   STDIN.getch
   puts ""
-  "$ Hallå? Är det någon där?".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Hallå? Är det någon där?".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
   print "$ "
   svar = gets.chomp
-  "$ Åååh, är det ni som är tjänstemännen?".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Åååh, är det ni som är tjänstemännen?".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
   print "$ "
   svar = gets.chomp
-  "$ Tack och lov för att ni är här!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Tack och lov för att ni är här!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ De onda IT-förmänen har återigen ställt till det för Helsingkrona.".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ De onda IT-förmänen har återigen ställt till det för Helsingkrona.".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ Inte med en bomb som förra gången, utan med ett förfärligt virus som kommer att sprida sig mellan alla datorer på Helsingkrona.".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Inte med en bomb som förra gången, utan med ett förfärligt virus som kommer att sprida sig mellan alla datorer på Helsingkrona.".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ Det enda sättet att stoppa deras onda planer är att hacka deras lösenord och ta bort viruset innan det hinner sprida sig!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Det enda sättet att stoppa deras onda planer är att hacka deras lösenord och ta bort viruset innan det hinner sprida sig!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ Jag har lyckats få fram lite ledtrådar om vad lösenordet kan vara. Framför er har ni det som jag har kommit fram till.".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Jag har lyckats få fram lite ledtrådar om vad lösenordet kan vara. Framför er har ni det som jag har kommit fram till.".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ Ni har 5 minuter på er att få fram lösenordet och bara 5 försök! Jag litar på er, när ni listat ut rätt lösenord så kan jag ta bort viruset!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Ni har 5 minuter på er att få fram lösenordet och bara 5 försök! Jag litar på er, när ni listat ut rätt lösenord så kan jag ta bort viruset!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ Lycka till!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Lycka till!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   puts ""
-  "$ Och tiden börjar nu!".each_char {|c| putc c ; sleep 0.1; $stdout.flush }
+  "$ Och tiden börjar nu!".each_char {|c| putc c ; sleep $speed; $stdout.flush }
   sleep(0.5)
   puts ""
   puts ""
-  thr = Thread.new {601.times do
+  $thr = Thread.new {601.times do
     $timer += 1
     sleep 1
     if $timer == 600
